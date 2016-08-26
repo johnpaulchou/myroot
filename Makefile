@@ -47,11 +47,11 @@ ${TARGET}: ${OBJ} ${DICT}
 ifeq ($(PLATFORM),macosx)
 # We need to make both the .dylib and the .so
 	$(LD) $(SOFLAGS)$@ $(LDFLAGS) -I./ -I$(ROOTSYS)/include $^ $(OutPutOpt) $@ $(EXPLLINKLIBS) $(RCLIBS)
-	ifneq ($(subst $(MACOSX_MINOR),,1234),1234)
-		ifeq ($(MACOSX_MINOR),4)
-			ln -sf $@ $(subst .$(DllSuf),.so,$@)
-		endif
-	endif
+#	ifneq ($(subst $(MACOSX_MINOR),,1234),1234)
+#		ifeq ($(MACOSX_MINOR),4)
+#			ln -sf $@ $(subst .$(DllSuf),.so,$@)
+#		endif
+#	endif
 else
 	$(LD) $(SOFLAGS) $(LDFLAGS) -I./ -I$(ROOTSYS)/include $^ $(EXPLLINKLIBS) $(OutPutOpt)$@ $(RCLIBS)
 	$(MT_DLL)
