@@ -1,3 +1,11 @@
 This builds libraries and objects that are useful in ROOT
 
-To use, setup ROOT (or cmsenv or whatever) and run the Makefile.  To use, 
+To use, setup ROOT (or cmsenv or whatever) and run the Makefile.
+
+You will also need to include the dynamic library that is created.  You can do this by modifying the rootlogon file to include the lines:
+
+  gSystem->AddIncludePath("-I/MYDIR/myroot/include");
+  gSystem->AddDynamicPath("/MYDIR/myroot/lib/");
+  gSystem->Load("libmyroot.so");
+
+where you must replace "MY_DIR" as appropriate.

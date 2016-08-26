@@ -17,6 +17,8 @@ endif
 
 #------------------------------------------------------------------------------
 
+LDFLAGS += -std=c++11 -fPIC
+
 SRCDIR = ./src
 INCDIR = ./include
 LIBDIR = ./lib
@@ -36,7 +38,6 @@ DEP = $(OBJ:%.${ObjSuf}=%.${DepSuf})
 
 DICT = ${SRCDIR}/Dict.cxx
 
-LDFLAGS += -std=c++11 -fPIC
 
 TARGET = ${LIBDIR}/libmyroot.${DllSuf}
 
@@ -63,9 +64,10 @@ endif
 ${DICT} : ${INCLUDES} ${SRCDIR}/LinkDef.h
 	@echo "Generating dictionary $@..."
 	$(ROOTCLING) -f $@ -I${INCDIR} -c $^
+	mv ${SRCDIR}/Dict_rdict.pcm ${LIBDIR}
 
 ${SRCDIR}/%.${ObjSuf} : ${SRCDIR}/%.${SrcSuf}
 	$(CXX) $(CXXFLAGS) -I${INCDIR} -MMD -c $< -o $@
 
 clean:
-	-rm -f ${OBJ} ${DEP} ${DICT} ${SRCDIR}/*.pcm ${TARGET}
+	-rm -f ${OBJ} ${DEP} ${DICT} ${LIBDIR}/*.pcm ${TARGET}

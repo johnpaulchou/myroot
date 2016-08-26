@@ -3,8 +3,9 @@ void defaultrootlogon()
   //  std::cout << "Loading CMS-specific Libraries." << std::endl;
 
   std::cout << "Add User-specific Libraries." << std::endl;
-  gSystem->AddIncludePath(" -I/uscms/home/johnpaul/myroot/include ");
-  gSystem->Load("/uscms/home/johnpaul/myroot/lib/libmyroot.so ");
+  gSystem->AddIncludePath("-I/uscms/home/johnpaul/myroot/include");
+  gSystem->AddDynamicPath("/uscms/home/johnpaul/myroot/lib/");
+  gSystem->Load("libmyroot.so");
 
   std::cout << "Setup style" << std::endl;
 
