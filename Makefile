@@ -3,6 +3,7 @@ ifeq ($(findstring $(MAKECMDTARGET),clean),)
 ifeq ($(shell which $(RC) 2>&1 | sed -ne "s@.*/$(RC)@$(RC)@p"),$(RC))
 MKARCH := $(wildcard $(shell $(RC) --etcdir)/Makefile.arch)
 RCONFIG := $(wildcard $(shell $(RC) --incdir)/RConfigure.h)
+RCLIBS := $(shell $(RC) --libs)
 endif
 ifneq ($(MKARCH),)
 include $(MKARCH)
@@ -35,23 +36,27 @@ DEP = $(OBJ:%.${ObjSuf}=%.${DepSuf})
 
 DICT = ${SRCDIR}/Dict.cxx
 
+LDFLAGS += -std=c++11 -fPIC
+
 #all: ${OBJ} ${DICT}
 
-myroot.${DllSuf}: ${OBJ} ${DICT}
+${LIBDIR}/libmyroot.${DllSuf}: ${OBJ} ${DICT}
 ifeq ($(PLATFORM),macosx)
 # We need to make both the .dylib and the .so
-	$(LD) -std=c++11 $(SOFLAGS)$@ $(LDFLAGS) -I./ -I$(ROOTSYS)/include $^ $(OutPutOpt) $@ $(EXPLLINKLIBS)
+	$(LD) $(SOFLAGS)$@ $(LDFLAGS) -I./ -I$(ROOTSYS)/include $^ $(OutPutOpt) $@ $(EXPLLINKLIBS) $(RCLIBS)
 	ifneq ($(subst $(MACOSX_MINOR),,1234),1234)
 		ifeq ($(MACOSX_MINOR),4)
 			ln -sf $@ $(subst .$(DllSuf),.so,$@)
 		endif
 	endif
 else
-	$(LD) $(SOFLAGS) $(LDFLAGS) -I./ -I$(ROOTSYS)/include $^ $(EXPLLINKLIBS) $(OutPutOpt)$@
+	$(LD) $(SOFLAGS) $(LDFLAGS) -I./ -I$(ROOTSYS)/include $^ $(EXPLLINKLIBS) $(OutPutOpt)$@ $(RCLIBS)
 	$(MT_DLL)
 endif
 
 -include $(DEP)
+
+
 
 ${DICT} : ${INCLUDES} ${SRCDIR}/LinkDef.h
 	@echo "Generating dictionary $@..."

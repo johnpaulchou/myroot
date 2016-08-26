@@ -1,16 +1,10 @@
 void defaultrootlogon()
 {
-  std::cout << "Loading CMS-specific Libraries." << std::endl;
-
-//  gSystem->Load("libFWCoreFWLite.so");
-//  gSystem->Load("../lib/slc4_ia32_gcc345/libDataFormatsMETReco.so");
-//  AutoLibraryLoader::enable();
+  //  std::cout << "Loading CMS-specific Libraries." << std::endl;
 
   std::cout << "Add User-specific Libraries." << std::endl;
-  gSystem->AddIncludePath(" -I/Users/johnpaul/Work/root/libs ");
-  gSystem->Load("/Users/johnpaul/Work/root/libs/CMSlumi_cc.so");
-  //  gSystem->Load("/Users/johnpaul/Work/root/libs/TH1DEff_cc.so");
-  gSystem->Load("/Users/johnpaul/Work/root/libs/histarray_cc.so");
+  gSystem->AddIncludePath(" -I/uscms/home/johnpaul/myroot/include ");
+  gSystem->Load("/uscms/home/johnpaul/myroot/lib/libmyroot.so ");
 
   std::cout << "Setup style" << std::endl;
 
