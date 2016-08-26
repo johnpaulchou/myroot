@@ -38,9 +38,11 @@ DICT = ${SRCDIR}/Dict.cxx
 
 LDFLAGS += -std=c++11 -fPIC
 
+TARGET = ${LIBDIR}/libmyroot.${DllSuf}
+
 #all: ${OBJ} ${DICT}
 
-${LIBDIR}/libmyroot.${DllSuf}: ${OBJ} ${DICT}
+${TARGET}: ${OBJ} ${DICT}
 ifeq ($(PLATFORM),macosx)
 # We need to make both the .dylib and the .so
 	$(LD) $(SOFLAGS)$@ $(LDFLAGS) -I./ -I$(ROOTSYS)/include $^ $(OutPutOpt) $@ $(EXPLLINKLIBS) $(RCLIBS)
@@ -66,4 +68,4 @@ ${SRCDIR}/%.${ObjSuf} : ${SRCDIR}/%.${SrcSuf}
 	$(CXX) $(CXXFLAGS) -I${INCDIR} -MMD -c $< -o $@
 
 clean:
-	-rm -f ${OBJ} ${DEP} ${DICT} ${SRCDIR}/*.pcm
+	-rm -f ${OBJ} ${DEP} ${DICT} ${SRCDIR}/*.pcm ${TARGET}
