@@ -3,8 +3,8 @@ void defaultrootlogon()
   //  std::cout << "Loading CMS-specific Libraries." << std::endl;
 
   std::cout << "Add User-specific Libraries." << std::endl;
-  gSystem->AddIncludePath("-I/uscms/home/johnpaul/myroot/include");
-  gSystem->AddDynamicPath("/uscms/home/johnpaul/myroot/lib/");
+  gSystem->AddIncludePath("-I/Users/johnpaul/Work/myroot/include");
+  gSystem->AddDynamicPath("/Users/johnpaul/Work/myroot/lib");
   gSystem->Load("libmyroot.so");
 
   std::cout << "Setup style" << std::endl;
@@ -36,6 +36,9 @@ void defaultrootlogon()
   gStyle->SetTitleColor(1);
   //  gStyle->SetErrorMarker( 8 );
   gStyle->SetPaperSize(TStyle::kUSLetter) ;
+
+  gStyle->SetLegendFont(42);
+  gStyle->SetLegendBorderSize(0);
   
   gStyle->SetCanvasBorderSize(0);
   gStyle->SetCanvasBorderMode(0);

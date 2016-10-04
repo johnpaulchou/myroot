@@ -1,42 +1,40 @@
 #include "CMSlumi.hh"
-
 #include <iostream>
-#include "TPad.h"
-#include "TLatex.h"
-#include "TLine.h"
-#include "TBox.h"
-#include "TASImage.h"
+#include <TPad.h>
+#include <TLatex.h>
+#include <TLine.h>
+#include <TBox.h>
 
-void 
-CMSlumi( TPad* pad, int iPeriod, int iPosX, bool writeExtra )
-{            
-  TString cmsText     = "CMS";
-  float cmsTextFont   = 61;  // default is helvetic-bold
-
-  TString extraText   = "Preliminary";
-  float extraTextFont = 52;  // default is helvetica-italics
+CMSlumi::CMSlumi()
+{
+  cmsText     = "CMS";
+  cmsTextFont   = 61;  // default is helvetic-bold
+  
+  extraText   = "Preliminary";
+  extraTextFont = 52;  // default is helvetica-italics
   
   // text sizes and text offsets with respect to the top frame
   // in unit of the top margin size
-  float lumiTextSize     = 0.6;
-  float lumiTextOffset   = 0.3;
-  float cmsTextSize      = 0.9;
-  float cmsTextOffset    = 0.2;  // only used in outOfFrame version
+  lumiTextSize     = 0.6;
+  lumiTextOffset   = 0.3;
+  cmsTextSize      = 0.9;
+  cmsTextOffset    = 0.2;  // only used in outOfFrame version
   
-  float relPosX    = 0.045;
-  float relPosY    = 0.035;
-  float relExtraDY = 1.2;
+  relPosX    = 0.045;
+  relPosY    = 0.035;
+  relExtraDY = 1.2;
   
   // ratio of "CMS" and extra text size
-  float extraOverCmsTextSize  = 0.6;
+  extraOverCmsTextSize  = 0.6;
   
-  TString lumi_13TeV = "2.5 fb^{-1}";
-  TString lumi_8TeV  = "19.7 fb^{-1}";
-  TString lumi_7TeV  = "5.1 fb^{-1}";
-  TString lumi_sqrtS = "";
+  lumiText = "3.2 fb^{-1} (13 TeV)";
   
-  bool drawLogo      = false;
+  drawLogo      = false;
+}
 
+
+void CMSlumi::Draw( TPad* pad, int iPosX, bool writeExtra)
+{            
   bool outOfFrame    = false;
   if( iPosX/10==0 ) 
     {
@@ -53,8 +51,8 @@ CMSlumi( TPad* pad, int iPeriod, int iPosX, bool writeExtra )
   //if( iPosX == 0  ) relPosX = 0.12;
   int align_ = 10*alignX_ + alignY_;
 
-  float H = pad->GetWh();
-  float W = pad->GetWw();
+  //  float H = pad->GetWh();
+  //  float W = pad->GetWw();
   float l = pad->GetLeftMargin();
   float t = pad->GetTopMargin();
   float r = pad->GetRightMargin();
@@ -62,54 +60,6 @@ CMSlumi( TPad* pad, int iPeriod, int iPosX, bool writeExtra )
   //  float e = 0.025;
 
   pad->cd();
-
-  TString lumiText;
-  if( iPeriod==1 )
-    {
-      lumiText += lumi_7TeV;
-      lumiText += " (7 TeV)";
-    }
-  else if ( iPeriod==2 )
-    {
-      lumiText += lumi_8TeV;
-      lumiText += " (8 TeV)";
-    }
-  else if( iPeriod==3 ) 
-    {
-      lumiText = lumi_8TeV; 
-      lumiText += " (8 TeV)";
-      lumiText += " + ";
-      lumiText += lumi_7TeV;
-      lumiText += " (7 TeV)";
-    }
-  else if ( iPeriod==4 )
-    {
-      lumiText += lumi_13TeV;
-      lumiText += " (13 TeV)";
-    }
-  else if ( iPeriod==7 )
-    { 
-      if( outOfFrame ) lumiText += "#scale[0.85]{";
-      lumiText += lumi_13TeV; 
-      lumiText += " (13 TeV)";
-      lumiText += " + ";
-      lumiText += lumi_8TeV; 
-      lumiText += " (8 TeV)";
-      lumiText += " + ";
-      lumiText += lumi_7TeV;
-      lumiText += " (7 TeV)";
-      if( outOfFrame) lumiText += "}";
-    }
-  else if ( iPeriod==12 )
-    {
-      lumiText += "8 TeV";
-    }
-  else if ( iPeriod==0 )
-    {
-      lumiText += lumi_sqrtS;
-    }
-   
-  std::cout << lumiText << std::endl;
 
   TLatex latex;
   latex.SetNDC();
@@ -147,39 +97,19 @@ CMSlumi( TPad* pad, int iPeriod, int iPosX, bool writeExtra )
       posX_ =  1-r - relPosX*(1-l-r);
     }
   float posY_ = 1-t - relPosY*(1-t-b);
-  if( !outOfFrame )
-    {
-      if( drawLogo )
-	{
-	  posX_ =   l + 0.045*(1-l-r)*W/H;
-	  posY_ = 1-t - 0.045*(1-t-b);
-	  float xl_0 = posX_;
-	  float yl_0 = posY_ - 0.15;
-	  float xl_1 = posX_ + 0.15*H/W;
-	  float yl_1 = posY_;
-	  TASImage* CMS_logo = new TASImage("CMS-BW-label.png");
-	  TPad* pad_logo = new TPad("logo","logo", xl_0, yl_0, xl_1, yl_1 );
-	  pad_logo->Draw();
-	  pad_logo->cd();
-	  CMS_logo->Draw("X");
-	  pad_logo->Modified();
-	  pad->cd();
-	}
-      else
-	{
-	  latex.SetTextFont(cmsTextFont);
-	  latex.SetTextSize(cmsTextSize*t);
-	  latex.SetTextAlign(align_);
-	  latex.DrawLatex(posX_, posY_, cmsText);
-	  if( writeExtra ) 
-	    {
-	      latex.SetTextFont(extraTextFont);
-	      latex.SetTextAlign(align_);
-	      latex.SetTextSize(extraTextSize*t);
-	      latex.DrawLatex(posX_, posY_- relExtraDY*cmsTextSize*t, extraText);
-	    }
-	}
-    }
+  if( !outOfFrame ) {
+    latex.SetTextFont(cmsTextFont);
+    latex.SetTextSize(cmsTextSize*t);
+    latex.SetTextAlign(align_);
+    latex.DrawLatex(posX_, posY_, cmsText);
+    if( writeExtra ) 
+      {
+	latex.SetTextFont(extraTextFont);
+	latex.SetTextAlign(align_);
+	latex.SetTextSize(extraTextSize*t);
+	latex.DrawLatex(posX_, posY_- relExtraDY*cmsTextSize*t, extraText);
+      }
+  }
   else if( writeExtra )
     {
       if( iPosX==0) 
