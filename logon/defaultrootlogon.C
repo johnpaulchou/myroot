@@ -9,24 +9,34 @@ void defaultrootlogon()
 
   std::cout << "Setup style" << std::endl;
 
-  const float FONTSIZE = 0.06;
+  const float FONTSIZE = 0.05;
 
   gROOT->SetStyle("Plain");
   gStyle->SetOptStat(1111110);
-  gStyle->SetLabelFont(42, "XYZ");
-  gStyle->SetLabelSize(0.05, "XYZ");
-  gStyle->SetNdivisions(510,"XYZ") ;
-  gStyle->SetLabelOffset(0.007,"XYZ") ;
+  gStyle->SetLabelFont(42, "X");
+  gStyle->SetLabelFont(42, "Y");
+  gStyle->SetLabelFont(42, "Z");
+  gStyle->SetLabelSize(0.045, "X");
+  gStyle->SetLabelSize(0.045, "Y");
+  gStyle->SetLabelSize(0.045, "Z");
+  gStyle->SetNdivisions(510,"X");
+  gStyle->SetNdivisions(510,"Y");
+  gStyle->SetNdivisions(510,"Z");
+  gStyle->SetLabelOffset(0.007,"X");
+  gStyle->SetLabelOffset(0.007,"Y");
+  gStyle->SetLabelOffset(0.007,"Z");
   gStyle->SetTextFont(42);
   gStyle->SetTextSize(FONTSIZE);
-  gStyle->SetTitleFont(42,"xyz");
-  gStyle->SetTitleFont( 42,"bla" );
-  gStyle->SetTitleFontSize(42);
-  gStyle->SetTitleX(FONTSIZE);
-  gStyle->SetTitleW(0.9);
-  gStyle->SetTitleH(0.08);
-  gStyle->SetTitleOffset(1.3,"y") ;
-  gStyle->SetTitleOffset(1.25,"x") ;
+  gStyle->SetTitleFont(42,"X");
+  gStyle->SetTitleFont(42,"Y");
+  gStyle->SetTitleFont(42,"Z");
+  gStyle->SetTitleFont(42,"T");
+  gStyle->SetTitleX(0.3);
+  gStyle->SetTitleY(0.985);
+  gStyle->SetTitleW(0);
+  gStyle->SetTitleH(0);
+  gStyle->SetTitleOffset(1.1,"y") ;
+  gStyle->SetTitleOffset(1.1,"x") ;
   gStyle->SetTitleXSize(FONTSIZE);
   gStyle->SetTitleYSize(FONTSIZE);
   gStyle->SetTitleSize(0.10);
@@ -53,10 +63,10 @@ void defaultrootlogon()
   gStyle->SetGridColor(0);
   gStyle->SetGridStyle(3);
   gStyle->SetGridWidth(1);
-  gStyle->SetPadBottomMargin(0.18) ;
-  gStyle->SetPadTopMargin(0.07) ;
-  gStyle->SetPadLeftMargin(0.17) ;
-  gStyle->SetPadRightMargin(0.08) ;
+  gStyle->SetPadBottomMargin(0.13);
+  gStyle->SetPadTopMargin(0.07);
+  gStyle->SetPadLeftMargin(0.14);
+  gStyle->SetPadRightMargin(0.08);
   //gStyle->SetPadTickX( 1 );
   gStyle->SetPadTickY( 1 );
   
@@ -90,24 +100,9 @@ void defaultrootlogon()
   gStyle->SetDrawBorder(2);
 
   
-  // create color map
-  /*
-  const int NCOL = 256;
-  int colors[ NCOL ] = { 0 };
-  for( int i = 0; i < NCOL; ++i ) {
-    TColor* color = new TColor( 501+i,
-				1 - float(i)/NCOL,
-				1 - float(i)/NCOL,
-				1 - float(i)/NCOL );
-    colors[i] = 501+i;
-    }
-  //    int colors[10] = {10,19,18,17,16,15,14,13,12,1};
-    gStyle->SetPalette(NCOL,colors);
-  */
+  gStyle->SetPalette(kDeepSea);
   
   gStyle->SetMarkerStyle(20);
   gStyle->SetMarkerSize(0.5);
   gROOT->ForceStyle();
-
-    
 }
